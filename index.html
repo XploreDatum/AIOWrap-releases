@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AIOWrap — All your apps. Every account.</title>
+<meta name="description" content="Run every web app — and unlimited accounts of each — side by side in isolated, always-logged-in sessions. Native macOS. Not Electron." />
+<link rel="icon" type="image/png" href="/assets/favicon.png" />
+<meta property="og:title" content="AIOWrap — All your apps. Every account." />
+<meta property="og:description" content="Every account, in its own isolated session. Native macOS, not Electron." />
+<meta property="og:image" content="/assets/icon.png" />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#0a0a0f" />
+<style>
+  :root{
+    --bg:#0a0a0f; --panel:#13131b; --panel2:#191922;
+    --txt:#f4f4f8; --muted:#a0a0b0; --faint:#6c6c7e;
+    --blue:#2f6bff; --violet:#7b5cff; --line:rgba(255,255,255,.08);
+    --radius:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Inter","SF Pro Display","Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased; line-height:1.5; overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;height:48px;padding:0 22px;border-radius:12px;
+    font-size:15px;font-weight:600;cursor:pointer;border:none;transition:transform .15s ease,filter .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px)}
+  .btn-primary{background:linear-gradient(135deg,var(--blue),var(--violet));color:#fff;box-shadow:0 8px 30px rgba(80,90,255,.35)}
+  .btn-primary:hover{filter:brightness(1.08)}
+  .btn-ghost{background:rgba(255,255,255,.06);color:var(--txt);border:1px solid var(--line)}
+  .sub{color:var(--muted);font-size:13.5px}
+
+  /* glow backdrop */
+  .glow{position:fixed;inset:0;z-index:-1;overflow:hidden}
+  .glow::before{content:"";position:absolute;top:-280px;left:50%;transform:translateX(-50%);
+    width:1100px;height:760px;border-radius:50%;
+    background:radial-gradient(circle at 50% 50%,rgba(80,90,255,.30),rgba(123,92,255,.10) 45%,transparent 70%);
+    filter:blur(40px)}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);background:rgba(10,10,15,.6);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;letter-spacing:-.2px}
+  .brand img{width:28px;height:28px;border-radius:8px}
+  .nav-links{display:flex;align-items:center;gap:28px}
+  .nav-links a{color:var(--muted);font-size:14px;transition:color .15s}
+  .nav-links a:hover{color:var(--txt)}
+  .nav-cta{height:38px;padding:0 16px;border-radius:10px;font-size:13.5px}
+  @media(max-width:720px){.nav-links a:not(.nav-cta){display:none}}
+
+  /* hero */
+  header{text-align:center;padding:96px 0 60px}
+  .hero-icon{width:128px;height:128px;border-radius:28px;margin:0 auto 34px;display:block;
+    box-shadow:0 30px 80px rgba(60,70,200,.45),0 0 0 1px rgba(255,255,255,.06);animation:float 6s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  h1{font-size:clamp(40px,6vw,68px);line-height:1.04;letter-spacing:-2px;font-weight:800;
+    background:linear-gradient(180deg,#fff,#c8c8d8);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{max-width:600px;margin:22px auto 0;color:var(--muted);font-size:clamp(16px,2.2vw,19px)}
+  .cta-row{display:flex;gap:14px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:36px}
+  .req{margin-top:16px}
+
+  /* badges strip */
+  .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:40px}
+  .badge{font-size:12.5px;color:var(--muted);background:var(--panel);border:1px solid var(--line);
+    padding:7px 14px;border-radius:99px}
+
+  /* section */
+  section{padding:72px 0}
+  .eyebrow{color:var(--violet);font-weight:700;font-size:13px;letter-spacing:1.4px;text-transform:uppercase;text-align:center}
+  h2{font-size:clamp(28px,4vw,42px);letter-spacing:-1px;font-weight:800;text-align:center;margin-top:10px}
+  .section-sub{color:var(--muted);text-align:center;max-width:560px;margin:14px auto 0;font-size:16px}
+
+  /* features */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+  .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);
+    border-radius:var(--radius);padding:26px;transition:transform .2s,border-color .2s}
+  .card:hover{transform:translateY(-4px);border-color:rgba(123,92,255,.4)}
+  .card .ic{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,rgba(47,107,255,.22),rgba(123,92,255,.22));font-size:21px;margin-bottom:16px}
+  .card h3{font-size:17px;font-weight:700;margin-bottom:7px}
+  .card p{color:var(--muted);font-size:14.5px}
+
+  /* highlight */
+  .highlight{background:linear-gradient(135deg,rgba(47,107,255,.12),rgba(123,92,255,.12));
+    border:1px solid var(--line);border-radius:28px;padding:56px 40px;text-align:center;margin-top:20px}
+  .highlight h2{margin-top:0}
+  .pills{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+  .pill{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.3);border:1px solid var(--line);
+    padding:10px 16px;border-radius:12px;font-size:14px;color:var(--txt)}
+  .pill .dot{width:9px;height:9px;border-radius:50%}
+
+  /* pricing */
+  .price-card{max-width:440px;margin:48px auto 0;background:linear-gradient(180deg,var(--panel),var(--panel2));
+    border:1px solid rgba(123,92,255,.4);border-radius:24px;padding:40px;text-align:center;
+    box-shadow:0 24px 70px rgba(40,40,90,.4)}
+  .price-card .tag{color:var(--violet);font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase}
+  .price{font-size:52px;font-weight:800;letter-spacing:-2px;margin:10px 0 2px}
+  .price small{font-size:16px;color:var(--muted);font-weight:500}
+  .price-feats{list-style:none;text-align:left;margin:26px 0;display:flex;flex-direction:column;gap:12px}
+  .price-feats li{display:flex;gap:10px;align-items:flex-start;color:var(--muted);font-size:15px}
+  .price-feats li::before{content:"✓";color:#39d98a;font-weight:800}
+
+  /* footer */
+  footer{border-top:1px solid var(--line);padding:48px 0;margin-top:40px}
+  footer .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px}
+  .foot-brand{display:flex;align-items:center;gap:10px;font-weight:700}
+  .foot-brand img{width:24px;height:24px;border-radius:7px}
+  .foot-note{color:var(--faint);font-size:13px}
+  .heart{color:#ff4d6d}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#"><img src="/assets/icon.png" alt="AIOWrap" />AIOWrap</a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a class="btn btn-primary nav-cta" href="#download">Download</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <img class="hero-icon" src="/assets/icon.png" alt="AIOWrap icon" />
+    <h1>All your apps.<br/>Every account.</h1>
+    <p class="lead">Run every web app — and unlimited accounts of each — side by side in fully isolated, always-logged-in sessions. A fast, native Mac app built on WebKit. Not Electron.</p>
+    <div class="cta-row" id="download">
+      <a class="btn btn-primary" href="https://github.com/xploredatum/AIOWrap-releases/releases/latest/download/Aiowrap.dmg">
+        ↓ Download for macOS
+      </a>
+      <a class="btn btn-ghost" href="#features">See features</a>
+    </div>
+    <p class="sub req">Free 14-day trial · macOS 14 Sonoma or later · Apple Silicon &amp; Intel</p>
+    <div class="badges">
+      <span class="badge">🔒 Isolated sessions</span>
+      <span class="badge">🪶 Tiny &amp; native</span>
+      <span class="badge">👥 Personas</span>
+      <span class="badge">🔔 macOS notifications</span>
+    </div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <p class="eyebrow">Why AIOWrap</p>
+    <h2>The browser trick browsers can't do</h2>
+    <p class="section-sub">Two WhatsApps. Two Gmails. A hundred of anything — each in its own sandboxed, persistent container.</p>
+    <div class="grid">
+      <div class="card"><div class="ic">🧩</div><h3>True session isolation</h3><p>Every service gets its own persistent storage container. Two accounts of the same app never see each other's cookies, logins, or keys.</p></div>
+      <div class="card"><div class="ic">👥</div><h3>Personas</h3><p>Group accounts into Personal, Work, Clients… Each persona holds as many accounts of the same app as you want. Switch in a click.</p></div>
+      <div class="card"><div class="ic">🪶</div><h3>Native &amp; featherweight</h3><p>Built on the system WebKit engine, not a bundled Chromium. A few MB on disk, low memory — no Electron bloat.</p></div>
+      <div class="card"><div class="ic">🔁</div><h3>Always logged in</h3><p>Sessions persist across restarts. No re-scanning QR codes, no re-signing in. Open the app and everything's just there.</p></div>
+      <div class="card"><div class="ic">🔔</div><h3>Real notifications</h3><p>Web notifications bridge straight to macOS Notification Center — with your permission, in both the app and the OS.</p></div>
+      <div class="card"><div class="ic">✨</div><h3>Made for macOS</h3><p>Vibrancy sidebar, collapsible icon rail, drag-to-reorder, per-app zoom, a Liquid Glass icon, and keyboard shortcuts throughout.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="highlight">
+      <p class="eyebrow">The hero moment</p>
+      <h2>Two WhatsApps. One Mac.</h2>
+      <p class="section-sub" style="margin-bottom:0">Add <code>web.whatsapp.com</code> twice and scan two phones. Both stay linked, independently, forever — something a single browser simply can't do.</p>
+      <div class="pills">
+        <span class="pill"><span class="dot" style="background:#25D366"></span>WhatsApp · Personal</span>
+        <span class="pill"><span class="dot" style="background:#ff9f0a"></span>WhatsApp · Work</span>
+        <span class="pill"><span class="dot" style="background:#EA4335"></span>Gmail · 2 inboxes</span>
+        <span class="pill"><span class="dot" style="background:#2AABEE"></span>Telegram</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <p class="eyebrow">Pricing</p>
+    <h2>Buy once. Yours forever.</h2>
+    <p class="section-sub">No subscriptions. A one-time license, with a free trial to start.</p>
+    <div class="price-card">
+      <div class="tag">One-time license</div>
+      <div class="price">$19<small> / once</small></div>
+      <p class="sub">14-day free trial — no card required</p>
+      <ul class="price-feats">
+        <li>Unlimited services &amp; accounts</li>
+        <li>Unlimited personas</li>
+        <li>All features, all updates for this version</li>
+        <li>Native, private, no telemetry</li>
+      </ul>
+      <a class="btn btn-primary" style="width:100%;justify-content:center" href="https://buy.polar.sh/polar_cl_6L0nNc9SSfDXctcubQnt9SFnp2cfy8sg7CEJR200mZE">Buy a license</a>
+      <p class="sub" style="margin-top:14px"><a href="https://github.com/xploredatum/AIOWrap-releases/releases/latest/download/Aiowrap.dmg" style="color:var(--violet)">Or download the free trial →</a></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-brand"><img src="/assets/icon.png" alt="" />AIOWrap</div>
+    <div class="foot-note">© <span id="yr"></span> XploreDatum Technologies LLP · Build with <span class="heart">♥</span> in Keralam</div>
+  </div>
+</footer>
+
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>
