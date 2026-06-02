@@ -15,5 +15,5 @@
 - Home: https://aiowrap.com/
 - Download (macOS .dmg): https://github.com/xploredatum/AIOWrap-releases/releases/latest/download/Aiowrap.dmg
 - Buy a license: https://buy.polar.sh/polar_cl_6L0nNc9SSfDXctcubQnt9SFnp2cfy8sg7CEJR200mZE
-- Privacy: https://aiowrap.com/privacy.html
-- Terms: https://aiowrap.com/terms.html
+- Privacy: https://aiowrap.com/privacy
+- Terms: https://aiowrap.com/terms
