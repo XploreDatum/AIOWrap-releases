@@ -1,0 +1,19 @@
+# AIOWrap
+
+> AIOWrap is a native macOS app for running many web apps — and many independent accounts of the same web app — side by side in fully isolated, persistent sessions. Built on the system WebKit engine (WKWebView), not Electron.
+
+## Key facts
+- Platform: macOS 14 (Sonoma) or later, Apple Silicon.
+- Core capability: run multiple isolated accounts of the same site (e.g. two WhatsApp Web accounts) at once, each in its own persistent session container.
+- Personas: group accounts (Personal, Work, Clients) and switch between them.
+- Privacy: no telemetry; web sessions stay local on the user's Mac.
+- Notifications: web notifications bridge to macOS Notification Center.
+- Pricing: one-time license, $19, with a 14-day free trial. Payments via Polar.
+- Publisher: XploreDatum Technologies LLP.
+
+## Links
+- Home: https://aiowrap.com/
+- Download (macOS .dmg): https://github.com/xploredatum/AIOWrap-releases/releases/latest/download/Aiowrap.dmg
+- Buy a license: https://buy.polar.sh/polar_cl_6L0nNc9SSfDXctcubQnt9SFnp2cfy8sg7CEJR200mZE
+- Privacy: https://aiowrap.com/privacy.html
+- Terms: https://aiowrap.com/terms.html
