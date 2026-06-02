@@ -114,6 +114,13 @@
   .badge{font-size:12.5px;color:var(--muted);background:var(--panel);border:1px solid var(--line);
     padding:7px 14px;border-radius:99px}
 
+  /* screenshots */
+  .shot-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:48px;align-items:start}
+  @media(max-width:760px){.shot-grid{grid-template-columns:1fr}}
+  .shot-grid figure{margin:0;text-align:center}
+  .shot-grid img{width:100%;height:auto;filter:drop-shadow(0 24px 55px rgba(0,0,0,.55))}
+  .shot-cap{margin-top:16px;color:var(--muted);font-size:13px}
+
   /* section */
   section{padding:72px 0}
   .eyebrow{color:var(--violet);font-weight:700;font-size:13px;letter-spacing:1.4px;text-transform:uppercase;text-align:center}
@@ -194,6 +201,24 @@
     </div>
   </div>
 </header>
+
+<section class="shots">
+  <div class="wrap">
+    <p class="eyebrow">See it</p>
+    <h2>Right at home on macOS</h2>
+    <p class="section-sub">Vibrancy sidebar, personas on top, your isolated accounts below — beautiful in dark and light.</p>
+    <div class="shot-grid">
+      <figure>
+        <img src="/assets/shot-dark.png" alt="AIOWrap in dark mode: persona switcher (All, Personal, Work) above isolated WhatsApp, Gmail, Telegram, Slack and YouTube accounts" loading="lazy" />
+        <figcaption class="shot-cap">Dark mode</figcaption>
+      </figure>
+      <figure>
+        <img src="/assets/shot-light.png" alt="AIOWrap in light mode: persona switcher above the isolated accounts sidebar" loading="lazy" />
+        <figcaption class="shot-cap">Light mode</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
 
 <section id="features">
   <div class="wrap">
